@@ -1,10 +1,11 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ProductsDto } from './dto/products.dto';
 import { ProductRepository } from 'src/infra/database/repository/products.repository';
+import { IProductsQuery } from './dto/products.interface';
 
 @Injectable()
 export class ProductsService {
-  constructor(private productRepository: ProductRepository) {}
+  constructor(private productRepository: ProductRepository) { }
 
   async create(createProductDto: ProductsDto) {
     try {
@@ -14,9 +15,11 @@ export class ProductsService {
     }
   }
 
-  async findAll() {
+  async findAll(params: IProductsQuery) {
     try {
-      return await this.productRepository.findAll();
+      const data = await this.productRepository.findAll();
+      if (params.order == 'ASC') return data;
+      return data.sort((a, b) => b.id - a.id);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
