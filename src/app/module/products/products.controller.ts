@@ -9,7 +9,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { ProductsService } from './products.service';
 import { ProductsDto } from './dto/products.dto';
 import { IProductsQuery } from './dto/products.interface';
@@ -26,6 +26,9 @@ export class ProductsController {
   }
 
   @Get()
+  @ApiQuery({ name: 'min', example: 10 })
+  @ApiQuery({ name: 'max', example: 15 })
+  @ApiQuery({ name: 'order', enum: ['ASC', 'DESC'] })
   @ApiOperation({ summary: 'Find products' })
   async findAll(@Query() params: IProductsQuery) {
     return this.productsService.findAll(params);
