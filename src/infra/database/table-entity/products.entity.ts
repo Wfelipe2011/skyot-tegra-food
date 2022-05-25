@@ -9,7 +9,7 @@ export class ProductEntity {
   title: string;
 
   @Column()
-  price: string;
+  price: number;
 
   @Column({ nullable: true })
   description: string;
@@ -18,21 +18,21 @@ export class ProductEntity {
   image: string;
 
   @Column({ nullable: true })
-  categoryId: number;
+  category: string;
 
   public static from(
     title: string,
-    price: string,
+    price: number,
     description?: string,
     image?: string,
-    categoryId?: number,
+    category?: string,
   ): ProductEntity {
     const entity = new ProductEntity();
     entity.title = title;
     entity.price = price;
     entity.description = description;
     entity.image = image;
-    entity.categoryId = categoryId;
+    entity.category = category;
     return entity;
   }
 }

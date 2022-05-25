@@ -1,18 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class ProductsDto {
-  @ApiProperty()
+  @ApiProperty({ example: "Pizza de mussarela" })
   title: string;
 
-  @ApiProperty()
-  price: string;
+  @ApiProperty({ example: 45.5 })
+  price: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: "Feito com molho de tomate especial", required: false })
   description?: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: "https://...", required: false })
   image?: string;
 
-  @ApiProperty()
-  categoryId?: number;
+  @ApiProperty({ example: "salgado" })
+  category?: string;
 }

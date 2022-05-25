@@ -2,6 +2,7 @@ import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { ProductsDto } from './dto/products.dto';
 import { ProductRepository } from 'src/infra/database/repository/products.repository';
 import { IProductsQuery } from './dto/products.interface';
+import { Between, LessThan, MoreThan } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
@@ -16,10 +17,20 @@ export class ProductsService {
   }
 
   async findAll(params: IProductsQuery) {
+    let queryConfig = {
+      order: {
+        id: params.order === 'DESC' ? 'DESC' : 'ASC',
+      } as {},
+      where: {}
+    }
+    if (params.category) {
+      queryConfig.where = { ...queryConfig.where, category: params?.category }
+    }
+    if (params.min && params.max) {
+      queryConfig.where = { ...queryConfig.where, price: Between(params.min, params.max) }
+    }
     try {
-      const data = await this.productRepository.findAll();
-      if (params.order == 'ASC') return data;
-      return data.sort((a, b) => b.id - a.id);
+      return await this.productRepository.find(queryConfig);
     } catch (error) {
       throw new InternalServerErrorException(error.message);
     }
