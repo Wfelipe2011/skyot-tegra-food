@@ -28,8 +28,10 @@ export class ProductsController {
   @Get()
   @ApiQuery({ name: 'min', example: 10, required: false })
   @ApiQuery({ name: 'max', example: 15, required: false })
-  @ApiQuery({ name: 'category', example: "salgado", required: false })
+  @ApiQuery({ name: 'category', example: 'salgado', required: false })
+  @ApiQuery({ name: 'filter', example: 'salgado', required: false })
   @ApiQuery({ name: 'order', enum: ['ASC', 'DESC'], required: false })
+  @ApiQuery({ name: 'page', example: 1 })
   @ApiOperation({ summary: 'Find products' })
   async findAll(@Query() params: IProductsQuery) {
     return this.productsService.findAll(params);
